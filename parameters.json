@@ -1,0 +1,21 @@
+{
+    "$schema": "",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "CloudLabsDeploymentID": {
+            "value": "GET-DEPLOYMENT-ID"
+        },
+        "CheckAcknowledgement": {
+            "value": "TRUE"
+        },
+        "ArtifactBucket": {
+            "value": ""
+        },
+        "ArtifactPrefix": {
+            "value": "lab-artifacts/"
+        },
+        "BedrockModelId": {
+            "value": "us.amazon.nova-2-lite-v1:0"
+        }
+    }
+}
