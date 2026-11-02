@@ -2,15 +2,8 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "AWS Hands-on Labs Phases 04-06 (8 modules): IAM, DynamoDB, Lambda, API Gateway, CloudWatch alarm, seed data and test events",
     "Parameters": {
-        "CloudLabsDeploymentID": {
-            "Description": "DeploymentID Value",
-            "Type": "String"
-        },
-        "CheckAcknowledgement": {
-            "Description": "CloudLabs acknowledgement flag",
-            "Type": "String",
-            "Default": "TRUE"
-        },
+        "CloudLabsDeploymentID": {"Description": "DeploymentID Value", "Type": "String"},
+        "CheckAcknowledgement": {"Description": "CloudLabs acknowledgement flag", "Type": "String", "Default": "TRUE"},
         "ArtifactBucket": {
             "Description": "S3 bucket in us-east-1 with functions/<FunctionName>.zip, seed/<TableName>.json, events/<FunctionName>.json. Empty = placeholder code, no seed data, no test events",
             "Type": "String",
@@ -27,70 +20,27 @@
             "Default": "us.amazon.nova-2-lite-v1:0"
         }
     },
-    "Mappings": {
-        "LabConfig": {
-            "Values": {
-                "AppHandler": "lambda_function.lambda_handler"
-            }
-        }
-    },
+    "Mappings": {"LabConfig": {"Values": {"AppHandler": "lambda_function.lambda_handler"}}},
     "Rules": {
         "RegionIsUsEast1": {
             "Assertions": [
                 {
-                    "Assert": {
-                        "Fn::Equals": [
-                            {
-                                "Ref": "AWS::Region"
-                            },
-                            "us-east-1"
-                        ]
-                    },
+                    "Assert": {"Fn::Equals": [{"Ref": "AWS::Region"}, "us-east-1"]},
                     "AssertDescription": "This lab must be deployed in us-east-1."
                 }
             ]
         }
     },
-    "Conditions": {
-        "HasArtifacts": {
-            "Fn::Not": [
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "ArtifactBucket"
-                        },
-                        ""
-                    ]
-                }
-            ]
-        }
-    },
+    "Conditions": {"HasArtifacts": {"Fn::Not": [{"Fn::Equals": [{"Ref": "ArtifactBucket"}, ""]}]}},
     "Resources": {
         "IntegrationMapTable": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
                 "TableName": "PrairieGoods-IntegrationMap",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "EnterpriseDataTable": {
@@ -98,26 +48,9 @@
             "Properties": {
                 "TableName": "PrairieGoods-EnterpriseData",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "ConfluencePagesTable": {
@@ -125,26 +58,9 @@
             "Properties": {
                 "TableName": "PrairieGoods-ConfluencePages",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianPagesTable": {
@@ -152,26 +68,9 @@
             "Properties": {
                 "TableName": "MeridianKB-Pages",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianAuditTable": {
@@ -179,26 +78,9 @@
             "Properties": {
                 "TableName": "MeridianAgent-Audit",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianApprovalsTable": {
@@ -206,26 +88,9 @@
             "Properties": {
                 "TableName": "MeridianAgent-Approvals",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "TenantDocsTable": {
@@ -233,26 +98,9 @@
             "Properties": {
                 "TableName": "TenantDocs",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "SupportTicketsTable": {
@@ -260,26 +108,9 @@
             "Properties": {
                 "TableName": "SupportTickets",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "RefundLogTable": {
@@ -287,26 +118,9 @@
             "Properties": {
                 "TableName": "RefundLog",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "TenantMembersTable": {
@@ -314,26 +128,9 @@
             "Properties": {
                 "TableName": "TenantMembers",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "TenantListingsTable": {
@@ -341,26 +138,9 @@
             "Properties": {
                 "TableName": "TenantListings",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "CustomerProfilesTable": {
@@ -369,37 +149,15 @@
                 "TableName": "CustomerProfiles",
                 "BillingMode": "PAY_PER_REQUEST",
                 "AttributeDefinitions": [
-                    {
-                        "AttributeName": "tenantId",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "customerId",
-                        "AttributeType": "S"
-                    }
+                    {"AttributeName": "tenantId", "AttributeType": "S"},
+                    {"AttributeName": "customerId", "AttributeType": "S"}
                 ],
                 "KeySchema": [
-                    {
-                        "AttributeName": "tenantId",
-                        "KeyType": "HASH"
-                    },
-                    {
-                        "AttributeName": "customerId",
-                        "KeyType": "RANGE"
-                    }
+                    {"AttributeName": "tenantId", "KeyType": "HASH"},
+                    {"AttributeName": "customerId", "KeyType": "RANGE"}
                 ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
-                "SSESpecification": {
-                    "SSEEnabled": true,
-                    "SSEType": "KMS"
-                }
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
+                "SSESpecification": {"SSEEnabled": true, "SSEType": "KMS"}
             }
         },
         "ErasureLedgerTable": {
@@ -408,37 +166,15 @@
                 "TableName": "ErasureLedger",
                 "BillingMode": "PAY_PER_REQUEST",
                 "AttributeDefinitions": [
-                    {
-                        "AttributeName": "tenantId",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "requestId",
-                        "AttributeType": "S"
-                    }
+                    {"AttributeName": "tenantId", "AttributeType": "S"},
+                    {"AttributeName": "requestId", "AttributeType": "S"}
                 ],
                 "KeySchema": [
-                    {
-                        "AttributeName": "tenantId",
-                        "KeyType": "HASH"
-                    },
-                    {
-                        "AttributeName": "requestId",
-                        "KeyType": "RANGE"
-                    }
+                    {"AttributeName": "tenantId", "KeyType": "HASH"},
+                    {"AttributeName": "requestId", "KeyType": "RANGE"}
                 ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
-                "SSESpecification": {
-                    "SSEEnabled": true,
-                    "SSEType": "KMS"
-                }
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
+                "SSESpecification": {"SSEEnabled": true, "SSEType": "KMS"}
             }
         },
         "AIPoliciesTable": {
@@ -446,26 +182,9 @@
             "Properties": {
                 "TableName": "AIPolicies",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "AIUsageLedgerTable": {
@@ -473,26 +192,9 @@
             "Properties": {
                 "TableName": "AIUsageLedger",
                 "BillingMode": "PAY_PER_REQUEST",
-                "AttributeDefinitions": [
-                    {
-                        "AttributeName": "pk",
-                        "AttributeType": "S"
-                    }
-                ],
-                "KeySchema": [
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "HASH"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "AttributeDefinitions": [{"AttributeName": "pk", "AttributeType": "S"}],
+                "KeySchema": [{"AttributeName": "pk", "KeyType": "HASH"}],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "OrderLambdaRole": {
@@ -504,16 +206,12 @@
                     "Statement": [
                         {
                             "Effect": "Allow",
-                            "Principal": {
-                                "Service": "lambda.amazonaws.com"
-                            },
+                            "Principal": {"Service": "lambda.amazonaws.com"},
                             "Action": "sts:AssumeRole"
                         }
                     ]
                 },
-                "ManagedPolicyArns": [
-                    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-                ],
+                "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"],
                 "Policies": [
                     {
                         "PolicyName": "LabSetupAccess",
@@ -526,9 +224,7 @@
                                     "Resource": {
                                         "Fn::If": [
                                             "HasArtifacts",
-                                            {
-                                                "Fn::Sub": "arn:aws:s3:::${ArtifactBucket}/${ArtifactPrefix}*"
-                                            },
+                                            {"Fn::Sub": "arn:aws:s3:::${ArtifactBucket}/${ArtifactPrefix}*"},
                                             "arn:aws:s3:::no-artifact-bucket/*"
                                         ]
                                     }
@@ -539,9 +235,7 @@
                                     "Resource": {
                                         "Fn::If": [
                                             "HasArtifacts",
-                                            {
-                                                "Fn::Sub": "arn:aws:s3:::${ArtifactBucket}"
-                                            },
+                                            {"Fn::Sub": "arn:aws:s3:::${ArtifactBucket}"},
                                             "arn:aws:s3:::no-artifact-bucket"
                                         ]
                                     }
@@ -568,33 +262,20 @@
                                 {
                                     "Effect": "Allow",
                                     "Action": "iam:SimulatePrincipalPolicy",
-                                    "Resource": {
-                                        "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/order-lambda-role"
-                                    }
+                                    "Resource": {"Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/order-lambda-role"}
                                 }
                             ]
                         }
                     }
                 ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "IntegrationLabAccessPolicy": {
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "IntegrationLabAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -612,31 +293,16 @@
                                 "dynamodb:DescribeTable"
                             ],
                             "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "IntegrationMapTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "EnterpriseDataTable",
-                                        "Arn"
-                                    ]
-                                }
+                                {"Fn::GetAtt": ["IntegrationMapTable", "Arn"]},
+                                {"Fn::GetAtt": ["EnterpriseDataTable", "Arn"]}
                             ]
                         },
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "bedrock:InvokeModel",
-                                "bedrock:InvokeModelWithResponseStream"
-                            ],
+                            "Action": ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
                             "Resource": [
                                 "arn:aws:bedrock:*::foundation-model/*",
-                                {
-                                    "Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"
-                                }
+                                {"Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"}
                             ]
                         }
                     ]
@@ -647,11 +313,7 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "KnowledgeAgentAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -668,26 +330,14 @@
                                 "dynamodb:BatchWriteItem",
                                 "dynamodb:DescribeTable"
                             ],
-                            "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "ConfluencePagesTable",
-                                        "Arn"
-                                    ]
-                                }
-                            ]
+                            "Resource": [{"Fn::GetAtt": ["ConfluencePagesTable", "Arn"]}]
                         },
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "bedrock:InvokeModel",
-                                "bedrock:InvokeModelWithResponseStream"
-                            ],
+                            "Action": ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
                             "Resource": [
                                 "arn:aws:bedrock:*::foundation-model/*",
-                                {
-                                    "Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"
-                                }
+                                {"Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"}
                             ]
                         }
                     ]
@@ -698,11 +348,7 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "MeridianAgentAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -720,37 +366,17 @@
                                 "dynamodb:DescribeTable"
                             ],
                             "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "MeridianPagesTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "MeridianAuditTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "MeridianApprovalsTable",
-                                        "Arn"
-                                    ]
-                                }
+                                {"Fn::GetAtt": ["MeridianPagesTable", "Arn"]},
+                                {"Fn::GetAtt": ["MeridianAuditTable", "Arn"]},
+                                {"Fn::GetAtt": ["MeridianApprovalsTable", "Arn"]}
                             ]
                         },
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "bedrock:InvokeModel",
-                                "bedrock:InvokeModelWithResponseStream"
-                            ],
+                            "Action": ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
                             "Resource": [
                                 "arn:aws:bedrock:*::foundation-model/*",
-                                {
-                                    "Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"
-                                }
+                                {"Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"}
                             ]
                         }
                     ]
@@ -761,26 +387,14 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "TenantAppAssume",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "sts:AssumeRole",
-                                "sts:TagSession"
-                            ],
-                            "Resource": {
-                                "Fn::GetAtt": [
-                                    "TenantDataAccessRole",
-                                    "Arn"
-                                ]
-                            }
+                            "Action": ["sts:AssumeRole", "sts:TagSession"],
+                            "Resource": {"Fn::GetAtt": ["TenantDataAccessRole", "Arn"]}
                         }
                     ]
                 }
@@ -790,11 +404,7 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "PromptGuardAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -812,31 +422,16 @@
                                 "dynamodb:DescribeTable"
                             ],
                             "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "SupportTicketsTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "RefundLogTable",
-                                        "Arn"
-                                    ]
-                                }
+                                {"Fn::GetAtt": ["SupportTicketsTable", "Arn"]},
+                                {"Fn::GetAtt": ["RefundLogTable", "Arn"]}
                             ]
                         },
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "bedrock:InvokeModel",
-                                "bedrock:InvokeModelWithResponseStream"
-                            ],
+                            "Action": ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
                             "Resource": [
                                 "arn:aws:bedrock:*::foundation-model/*",
-                                {
-                                    "Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"
-                                }
+                                {"Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"}
                             ]
                         }
                     ]
@@ -847,11 +442,7 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "RbacAppAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -869,18 +460,8 @@
                                 "dynamodb:DescribeTable"
                             ],
                             "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "TenantMembersTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "TenantListingsTable",
-                                        "Arn"
-                                    ]
-                                }
+                                {"Fn::GetAtt": ["TenantMembersTable", "Arn"]},
+                                {"Fn::GetAtt": ["TenantListingsTable", "Arn"]}
                             ]
                         }
                     ]
@@ -891,11 +472,7 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "PrivacyAppAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -913,18 +490,8 @@
                                 "dynamodb:DescribeTable"
                             ],
                             "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "CustomerProfilesTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "ErasureLedgerTable",
-                                        "Arn"
-                                    ]
-                                }
+                                {"Fn::GetAtt": ["CustomerProfilesTable", "Arn"]},
+                                {"Fn::GetAtt": ["ErasureLedgerTable", "Arn"]}
                             ]
                         }
                     ]
@@ -935,11 +502,7 @@
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": "GovernanceGatewayAccess",
-                "Roles": [
-                    {
-                        "Ref": "OrderLambdaRole"
-                    }
-                ],
+                "Roles": [{"Ref": "OrderLambdaRole"}],
                 "PolicyDocument": {
                     "Version": "2012-10-17",
                     "Statement": [
@@ -957,42 +520,23 @@
                                 "dynamodb:DescribeTable"
                             ],
                             "Resource": [
-                                {
-                                    "Fn::GetAtt": [
-                                        "AIPoliciesTable",
-                                        "Arn"
-                                    ]
-                                },
-                                {
-                                    "Fn::GetAtt": [
-                                        "AIUsageLedgerTable",
-                                        "Arn"
-                                    ]
-                                }
+                                {"Fn::GetAtt": ["AIPoliciesTable", "Arn"]},
+                                {"Fn::GetAtt": ["AIUsageLedgerTable", "Arn"]}
                             ]
                         },
                         {
                             "Effect": "Allow",
-                            "Action": [
-                                "bedrock:InvokeModel",
-                                "bedrock:InvokeModelWithResponseStream"
-                            ],
+                            "Action": ["bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream"],
                             "Resource": [
                                 "arn:aws:bedrock:*::foundation-model/*",
-                                {
-                                    "Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"
-                                }
+                                {"Fn::Sub": "arn:aws:bedrock:*:${AWS::AccountId}:inference-profile/*"}
                             ]
                         },
                         {
                             "Effect": "Allow",
                             "Action": "cloudwatch:PutMetricData",
                             "Resource": "*",
-                            "Condition": {
-                                "StringEquals": {
-                                    "cloudwatch:namespace": "TEST-AIGovernance"
-                                }
-                            }
+                            "Condition": {"StringEquals": {"cloudwatch:namespace": "TEST-AIGovernance"}}
                         }
                     ]
                 }
@@ -1007,18 +551,8 @@
                     "Statement": [
                         {
                             "Effect": "Allow",
-                            "Principal": {
-                                "AWS": {
-                                    "Fn::GetAtt": [
-                                        "OrderLambdaRole",
-                                        "Arn"
-                                    ]
-                                }
-                            },
-                            "Action": [
-                                "sts:AssumeRole",
-                                "sts:TagSession"
-                            ]
+                            "Principal": {"AWS": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]}},
+                            "Action": ["sts:AssumeRole", "sts:TagSession"]
                         }
                     ]
                 },
@@ -1041,27 +575,13 @@
                                         "dynamodb:BatchWriteItem",
                                         "dynamodb:DescribeTable"
                                     ],
-                                    "Resource": [
-                                        {
-                                            "Fn::GetAtt": [
-                                                "TenantDocsTable",
-                                                "Arn"
-                                            ]
-                                        }
-                                    ]
+                                    "Resource": [{"Fn::GetAtt": ["TenantDocsTable", "Arn"]}]
                                 }
                             ]
                         }
                     }
                 ],
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "SeedDataFunction": {
@@ -1081,23 +601,11 @@
                 "Handler": "index.handler",
                 "Timeout": 300,
                 "MemorySize": 256,
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "Code": {
                     "ZipFile": "import json,time,datetime,urllib.request,boto3\nfrom decimal import Decimal\nfrom botocore.exceptions import ClientError\ns3=boto3.client('s3');sts=boto3.client('sts');ddb=boto3.resource('dynamodb')\ndef send(e,c,s,r='',d=None,pid=None):\n b=json.dumps({'Status':s,'Reason':(r or 'See log '+c.log_stream_name)[:900],'PhysicalResourceId':pid or e.get('PhysicalResourceId') or e['LogicalResourceId'],'StackId':e['StackId'],'RequestId':e['RequestId'],'LogicalResourceId':e['LogicalResourceId'],'Data':d or {}}).encode()\n urllib.request.urlopen(urllib.request.Request(e['ResponseURL'],data=b,method='PUT',headers={'Content-Type':''}))\ndef retry(f,*a,**k):\n for i in range(24):\n  try:return f(*a,**k)\n  except ClientError as x:\n   if i==23 or 'AccessDenied' not in x.response['Error']['Code']:raise\n   time.sleep(5)\ndef fetch(p,folder,name):\n b=p.get('Bucket','')\n if not b:return None\n try:o=retry(s3.get_object,Bucket=b,Key=p.get('Prefix','')+folder+'/'+name+'.json')\n except ClientError as x:\n  if x.response['Error']['Code'] in('NoSuchKey','404'):return None\n  raise\n return o['Body'].read()\ndef table(p,t):\n ra=p.get('RoleArn')\n if not ra:return ddb.Table(t)\n cr=retry(sts.assume_role,RoleArn=ra,RoleSessionName='lab-seed')['Credentials']\n return boto3.resource('dynamodb',aws_access_key_id=cr['AccessKeyId'],aws_secret_access_key=cr['SecretAccessKey'],aws_session_token=cr['SessionToken']).Table(t)\ndef fill(o,n):\n if isinstance(o,str):\n  o=o.replace('{{CURRENT_MONTH}}',n.strftime('%Y-%m')).replace('{{TODAY}}',n.strftime('%Y-%m-%d'))\n  if o.startswith('{{DAYS_AGO:') and o.endswith('}}'):return (n-datetime.timedelta(days=int(o[11:-2]))).strftime('%Y-%m-%dT%H:%M:%SZ')\n  return o\n if isinstance(o,list):return [fill(x,n) for x in o]\n if isinstance(o,dict):return {k:fill(v,n) for k,v in o.items()}\n return o\ndef write(p,t,items):\n with table(p,t).batch_writer() as w:\n  for it in items:w.put_item(Item=it)\ndef handler(e,c):\n if e['RequestType']=='Delete':return send(e,c,'SUCCESS')\n p=e['ResourceProperties'];n=0;done=[];skip=[]\n try:\n  now=datetime.datetime.now(datetime.timezone.utc)\n  for t in p['Tables']:\n   raw=fetch(p,'seed',t)\n   if raw is None:skip.append(t);continue\n   items=fill(json.loads(raw,parse_float=Decimal),now)\n   retry(write,p,t,items);n+=len(items);done.append(t)\n  send(e,c,'SUCCESS',d={'ItemsWritten':str(n),'Seeded':','.join(done) or 'none','Skipped':','.join(skip) or 'none'},pid='seed-'+e['LogicalResourceId'])\n except Exception as x:\n  print(repr(x));send(e,c,'FAILED',str(x))\n"
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "TestEventsFunction": {
@@ -1117,23 +625,11 @@
                 "Handler": "index.handler",
                 "Timeout": 300,
                 "MemorySize": 256,
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "Code": {
                     "ZipFile": "import json,time,urllib.request,boto3\nfrom botocore.exceptions import ClientError\ns3=boto3.client('s3');sc=boto3.client('schemas');R='lambda-testevent-schemas'\ndef send(e,c,s,r='',d=None,pid=None):\n b=json.dumps({'Status':s,'Reason':(r or 'See log '+c.log_stream_name)[:900],'PhysicalResourceId':pid or e.get('PhysicalResourceId') or e['LogicalResourceId'],'StackId':e['StackId'],'RequestId':e['RequestId'],'LogicalResourceId':e['LogicalResourceId'],'Data':d or {}}).encode()\n urllib.request.urlopen(urllib.request.Request(e['ResponseURL'],data=b,method='PUT',headers={'Content-Type':''}))\ndef retry(f,*a,**k):\n for i in range(24):\n  try:return f(*a,**k)\n  except ClientError as x:\n   if i==23 or 'AccessDenied' not in x.response['Error']['Code']:raise\n   time.sleep(5)\ndef fetch(p,folder,name):\n b=p.get('Bucket','')\n if not b:return None\n try:o=retry(s3.get_object,Bucket=b,Key=p.get('Prefix','')+folder+'/'+name+'.json')\n except ClientError as x:\n  if x.response['Error']['Code'] in('NoSuchKey','404'):return None\n  raise\n return o['Body'].read()\ndef reg():\n try:retry(sc.create_registry,RegistryName=R,Description='Lambda shareable test events')\n except ClientError as x:\n  if x.response['Error']['Code']!='ConflictException':raise\ndef put(n,body):\n try:sc.create_schema(RegistryName=R,SchemaName=n,Type='OpenApi3',Content=body)\n except ClientError as x:\n  if x.response['Error']['Code']!='ConflictException':raise\n  sc.update_schema(RegistryName=R,SchemaName=n,Type='OpenApi3',Content=body)\ndef handler(e,c):\n p=e['ResourceProperties'];fns=p['Functions']\n if e['RequestType']=='Delete':\n  for f in fns:\n   try:sc.delete_schema(RegistryName=R,SchemaName='_'+f+'-schema')\n   except Exception:pass\n  return send(e,c,'SUCCESS')\n done=[];skip=[]\n try:\n  for f in fns:\n   raw=fetch(p,'events',f)\n   if raw is None:skip.append(f);continue\n   ev=json.loads(raw)\n   doc={'openapi':'3.0.0','info':{'version':'1.0.0','title':'Event'},'paths':{},'components':{'schemas':{'Event':{'type':'object'}},'examples':{k:{'value':v} for k,v in ev.items()}}}\n   reg();retry(put,'_'+f+'-schema',json.dumps(doc));done.append(f)\n  send(e,c,'SUCCESS',d={'Created':','.join(done) or 'none','Skipped':','.join(skip) or 'none'},pid='events-'+e['LogicalResourceId'])\n except Exception as x:\n  print(repr(x));send(e,c,'FAILED',str(x))\n"
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "ValidationFunction": {
@@ -1153,23 +649,11 @@
                 "Handler": "index.handler",
                 "Timeout": 300,
                 "MemorySize": 256,
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "Code": {
                     "ZipFile": "import json,time,urllib.request,urllib.error,boto3\nfrom botocore.exceptions import ClientError\ns3=None;iam=boto3.client('iam');br=boto3.client('bedrock-runtime')\ndef send(e,c,s,r='',d=None,pid=None):\n b=json.dumps({'Status':s,'Reason':(r or 'See log '+c.log_stream_name)[:900],'PhysicalResourceId':pid or e.get('PhysicalResourceId') or e['LogicalResourceId'],'StackId':e['StackId'],'RequestId':e['RequestId'],'LogicalResourceId':e['LogicalResourceId'],'Data':d or {}}).encode()\n urllib.request.urlopen(urllib.request.Request(e['ResponseURL'],data=b,method='PUT',headers={'Content-Type':''}))\ndef retry(f,*a,**k):\n for i in range(24):\n  try:return f(*a,**k)\n  except ClientError as x:\n   if i==23 or 'AccessDenied' not in x.response['Error']['Code']:raise\n   time.sleep(5)\ndef fetch(p,folder,name):\n b=p.get('Bucket','')\n if not b:return None\n try:o=retry(s3.get_object,Bucket=b,Key=p.get('Prefix','')+folder+'/'+name+'.json')\n except ClientError as x:\n  if x.response['Error']['Code'] in('NoSuchKey','404'):return None\n  raise\n return o['Body'].read()\ndef http(u,m='GET',b=None):\n try:return str(urllib.request.urlopen(urllib.request.Request(u,data=b,method=m,headers={'Content-Type':'application/json'}),timeout=25).status)\n except urllib.error.HTTPError as x:return str(x.code)\n except Exception as x:return 'ERR '+type(x).__name__\ndef handler(e,c):\n if e['RequestType']=='Delete':return send(e,c,'SUCCESS')\n p=e['ResourceProperties'];d={}\n try:\n  d['ConfluenceApi']=http(p['ConfluenceUrl']+'/lab-check')\n  d['MeridianKbApi']=http(p['MeridianKbUrl']+'/lab-check')\n  d['MeridianAsk']=http(p['AskUrl'],'POST',b'{}')\n  r=retry(iam.simulate_principal_policy,PolicySourceArn=p['AppRoleArn'],ActionNames=['dynamodb:GetItem','dynamodb:Query','dynamodb:Scan','dynamodb:PutItem'],ResourceArns=[p['TenantDocsArn']])\n  bad=[x['EvalActionName'] for x in r['EvaluationResults'] if x['EvalDecision']=='allowed']\n  d['TenantDocsDirectAccess']='allowed: '+','.join(bad) if bad else 'denied (correct)'\n  try:\n   retry(br.converse,modelId=p['ModelId'],messages=[{'role':'user','content':[{'text':'Reply OK'}]}],inferenceConfig={'maxTokens':5});d['ModelAccess']='ok'\n  except Exception as x:d['ModelAccess']='FAILED: '+str(x)[:200]\n except Exception as x:\n  print(repr(x));return send(e,c,'FAILED',str(x))\n print(json.dumps(d))\n if bad:return send(e,c,'FAILED','order-lambda-role has direct TenantDocs access: '+','.join(bad),d)\n send(e,c,'SUCCESS',d=d,pid='lab-validation')\n"
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "IntegrationAgentFunction": {
@@ -1181,48 +665,26 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/PrairieGoods-IntegrationAgent.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/PrairieGoods-IntegrationAgent.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "ConfluenceApiFunction": {
@@ -1234,48 +696,26 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/PrairieGoods-ConfluenceAPI.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/PrairieGoods-ConfluenceAPI.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "KnowledgeAgentFunction": {
@@ -1287,48 +727,26 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/PrairieGoods-KnowledgeAgent.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/PrairieGoods-KnowledgeAgent.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
                 "Environment": {
                     "Variables": {
                         "CONFLUENCE_BASE_URL": {
@@ -1348,48 +766,26 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/MeridianKB-ConfluenceAPI.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/MeridianKB-ConfluenceAPI.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianSupportAgentFunction": {
@@ -1401,48 +797,26 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/MeridianSupportAgent.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/MeridianSupportAgent.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "TenantSaaSAppFunction": {
@@ -1454,53 +828,27 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/TenantSaaSApp.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/TenantSaaSApp.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
-                "Environment": {
-                    "Variables": {
-                        "ISOLATION_MODE": "NONE"
-                    }
-                }
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
+                "Environment": {"Variables": {"ISOLATION_MODE": "NONE"}}
             }
         },
         "PromptGuardAppFunction": {
@@ -1512,53 +860,27 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 120,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/PromptGuardApp.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/PromptGuardApp.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
-                "Environment": {
-                    "Variables": {
-                        "GUARD_MODE": "NAIVE"
-                    }
-                }
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
+                "Environment": {"Variables": {"GUARD_MODE": "NAIVE"}}
             }
         },
         "TenantRbacAppFunction": {
@@ -1570,53 +892,27 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/TenantRbacApp.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/TenantRbacApp.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
-                "Environment": {
-                    "Variables": {
-                        "RBAC_MODE": "GLOBAL"
-                    }
-                }
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
+                "Environment": {"Variables": {"RBAC_MODE": "GLOBAL"}}
             }
         },
         "PrivacyGuardAppFunction": {
@@ -1628,53 +924,27 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/PrivacyGuardApp.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/PrivacyGuardApp.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
                         }
                     ]
                 },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ],
-                "Environment": {
-                    "Variables": {
-                        "PRIVACY_MODE": "OPEN"
-                    }
-                }
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}],
+                "Environment": {"Variables": {"PRIVACY_MODE": "OPEN"}}
             }
         },
         "AIGovernanceGatewayFunction": {
@@ -1686,34 +956,19 @@
                 "Handler": {
                     "Fn::If": [
                         "HasArtifacts",
-                        {
-                            "Fn::FindInMap": [
-                                "LabConfig",
-                                "Values",
-                                "AppHandler"
-                            ]
-                        },
+                        {"Fn::FindInMap": ["LabConfig", "Values", "AppHandler"]},
                         "index.handler"
                     ]
                 },
-                "Role": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
+                "Role": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
                 "MemorySize": 256,
                 "Timeout": 60,
                 "Code": {
                     "Fn::If": [
                         "HasArtifacts",
                         {
-                            "S3Bucket": {
-                                "Ref": "ArtifactBucket"
-                            },
-                            "S3Key": {
-                                "Fn::Sub": "${ArtifactPrefix}functions/AIGovernanceGateway.zip"
-                            }
+                            "S3Bucket": {"Ref": "ArtifactBucket"},
+                            "S3Key": {"Fn::Sub": "${ArtifactPrefix}functions/AIGovernanceGateway.zip"}
                         },
                         {
                             "ZipFile": "import json\ndef handler(e,c):\n return {'statusCode':200,'body':json.dumps({'placeholder':c.function_name,'event':e},default=str)}\n"
@@ -1721,67 +976,33 @@
                     ]
                 },
                 "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    },
-                    {
-                        "Key": "test-cost-centre",
-                        "Value": "test"
-                    }
+                    {"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}},
+                    {"Key": "test-cost-centre", "Value": "test"}
                 ],
-                "Environment": {
-                    "Variables": {
-                        "GOV_MODE": "OPEN"
-                    }
-                }
+                "Environment": {"Variables": {"GOV_MODE": "OPEN"}}
             }
         },
         "ConfluenceRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
                 "Name": "TEST-ConfluenceAPI",
-                "EndpointConfiguration": {
-                    "Types": [
-                        "REGIONAL"
-                    ]
-                },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "EndpointConfiguration": {"Types": ["REGIONAL"]},
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "ConfluenceRestApiResource": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "ConfluenceRestApi"
-                },
-                "ParentId": {
-                    "Fn::GetAtt": [
-                        "ConfluenceRestApi",
-                        "RootResourceId"
-                    ]
-                },
+                "RestApiId": {"Ref": "ConfluenceRestApi"},
+                "ParentId": {"Fn::GetAtt": ["ConfluenceRestApi", "RootResourceId"]},
                 "PathPart": "{proxy+}"
             }
         },
         "ConfluenceRestApiMethod": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "ConfluenceRestApi"
-                },
-                "ResourceId": {
-                    "Ref": "ConfluenceRestApiResource"
-                },
+                "RestApiId": {"Ref": "ConfluenceRestApi"},
+                "ResourceId": {"Ref": "ConfluenceRestApiResource"},
                 "HttpMethod": "ANY",
                 "AuthorizationType": "NONE",
                 "Integration": {
@@ -1796,88 +1017,47 @@
         "ConfluenceRestApiDeployment": {
             "Type": "AWS::ApiGateway::Deployment",
             "DependsOn": "ConfluenceRestApiMethod",
-            "Properties": {
-                "RestApiId": {
-                    "Ref": "ConfluenceRestApi"
-                }
-            }
+            "Properties": {"RestApiId": {"Ref": "ConfluenceRestApi"}}
         },
         "ConfluenceRestApiStageV1": {
             "Type": "AWS::ApiGateway::Stage",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "ConfluenceRestApi"
-                },
-                "DeploymentId": {
-                    "Ref": "ConfluenceRestApiDeployment"
-                },
+                "RestApiId": {"Ref": "ConfluenceRestApi"},
+                "DeploymentId": {"Ref": "ConfluenceRestApiDeployment"},
                 "StageName": "v1",
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "ConfluenceRestApiPermission": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "Action": "lambda:InvokeFunction",
-                "FunctionName": {
-                    "Ref": "ConfluenceApiFunction"
-                },
+                "FunctionName": {"Ref": "ConfluenceApiFunction"},
                 "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                    "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ConfluenceRestApi}/*"
-                }
+                "SourceArn": {"Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ConfluenceRestApi}/*"}
             }
         },
         "MeridianKbRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
                 "Name": "TEST-MeridianKB-API",
-                "EndpointConfiguration": {
-                    "Types": [
-                        "REGIONAL"
-                    ]
-                },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "EndpointConfiguration": {"Types": ["REGIONAL"]},
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianKbRestApiResource": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianKbRestApi"
-                },
-                "ParentId": {
-                    "Fn::GetAtt": [
-                        "MeridianKbRestApi",
-                        "RootResourceId"
-                    ]
-                },
+                "RestApiId": {"Ref": "MeridianKbRestApi"},
+                "ParentId": {"Fn::GetAtt": ["MeridianKbRestApi", "RootResourceId"]},
                 "PathPart": "{proxy+}"
             }
         },
         "MeridianKbRestApiMethod": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianKbRestApi"
-                },
-                "ResourceId": {
-                    "Ref": "MeridianKbRestApiResource"
-                },
+                "RestApiId": {"Ref": "MeridianKbRestApi"},
+                "ResourceId": {"Ref": "MeridianKbRestApiResource"},
                 "HttpMethod": "ANY",
                 "AuthorizationType": "NONE",
                 "Integration": {
@@ -1892,88 +1072,47 @@
         "MeridianKbRestApiDeployment": {
             "Type": "AWS::ApiGateway::Deployment",
             "DependsOn": "MeridianKbRestApiMethod",
-            "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianKbRestApi"
-                }
-            }
+            "Properties": {"RestApiId": {"Ref": "MeridianKbRestApi"}}
         },
         "MeridianKbRestApiStageV1": {
             "Type": "AWS::ApiGateway::Stage",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianKbRestApi"
-                },
-                "DeploymentId": {
-                    "Ref": "MeridianKbRestApiDeployment"
-                },
+                "RestApiId": {"Ref": "MeridianKbRestApi"},
+                "DeploymentId": {"Ref": "MeridianKbRestApiDeployment"},
                 "StageName": "v1",
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianKbRestApiPermission": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "Action": "lambda:InvokeFunction",
-                "FunctionName": {
-                    "Ref": "MeridianKbApiFunction"
-                },
+                "FunctionName": {"Ref": "MeridianKbApiFunction"},
                 "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                    "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${MeridianKbRestApi}/*"
-                }
+                "SourceArn": {"Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${MeridianKbRestApi}/*"}
             }
         },
         "MeridianFrontDoorApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
                 "Name": "TEST-Meridian-FrontDoor",
-                "EndpointConfiguration": {
-                    "Types": [
-                        "REGIONAL"
-                    ]
-                },
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "EndpointConfiguration": {"Types": ["REGIONAL"]},
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianFrontDoorApiResource": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianFrontDoorApi"
-                },
-                "ParentId": {
-                    "Fn::GetAtt": [
-                        "MeridianFrontDoorApi",
-                        "RootResourceId"
-                    ]
-                },
+                "RestApiId": {"Ref": "MeridianFrontDoorApi"},
+                "ParentId": {"Fn::GetAtt": ["MeridianFrontDoorApi", "RootResourceId"]},
                 "PathPart": "ask"
             }
         },
         "MeridianFrontDoorApiMethod": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianFrontDoorApi"
-                },
-                "ResourceId": {
-                    "Ref": "MeridianFrontDoorApiResource"
-                },
+                "RestApiId": {"Ref": "MeridianFrontDoorApi"},
+                "ResourceId": {"Ref": "MeridianFrontDoorApiResource"},
                 "HttpMethod": "ANY",
                 "AuthorizationType": "NONE",
                 "Integration": {
@@ -1988,43 +1127,24 @@
         "MeridianFrontDoorApiDeployment": {
             "Type": "AWS::ApiGateway::Deployment",
             "DependsOn": "MeridianFrontDoorApiMethod",
-            "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianFrontDoorApi"
-                }
-            }
+            "Properties": {"RestApiId": {"Ref": "MeridianFrontDoorApi"}}
         },
         "MeridianFrontDoorApiStageV1": {
             "Type": "AWS::ApiGateway::Stage",
             "Properties": {
-                "RestApiId": {
-                    "Ref": "MeridianFrontDoorApi"
-                },
-                "DeploymentId": {
-                    "Ref": "MeridianFrontDoorApiDeployment"
-                },
+                "RestApiId": {"Ref": "MeridianFrontDoorApi"},
+                "DeploymentId": {"Ref": "MeridianFrontDoorApiDeployment"},
                 "StageName": "v1",
-                "Tags": [
-                    {
-                        "Key": "CloudLabsDeploymentID",
-                        "Value": {
-                            "Ref": "CloudLabsDeploymentID"
-                        }
-                    }
-                ]
+                "Tags": [{"Key": "CloudLabsDeploymentID", "Value": {"Ref": "CloudLabsDeploymentID"}}]
             }
         },
         "MeridianFrontDoorApiPermission": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "Action": "lambda:InvokeFunction",
-                "FunctionName": {
-                    "Ref": "MeridianSupportAgentFunction"
-                },
+                "FunctionName": {"Ref": "MeridianSupportAgentFunction"},
                 "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                    "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${MeridianFrontDoorApi}/*"
-                }
+                "SourceArn": {"Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${MeridianFrontDoorApi}/*"}
             }
         },
         "AIDailyCostHighAlarm": {
@@ -2044,132 +1164,52 @@
         "SeedData": {
             "Type": "Custom::LabSeedData",
             "Properties": {
-                "ServiceToken": {
-                    "Fn::GetAtt": [
-                        "SeedDataFunction",
-                        "Arn"
-                    ]
-                },
-                "Bucket": {
-                    "Ref": "ArtifactBucket"
-                },
-                "Prefix": {
-                    "Ref": "ArtifactPrefix"
-                },
+                "ServiceToken": {"Fn::GetAtt": ["SeedDataFunction", "Arn"]},
+                "Bucket": {"Ref": "ArtifactBucket"},
+                "Prefix": {"Ref": "ArtifactPrefix"},
                 "Tables": [
-                    {
-                        "Ref": "IntegrationMapTable"
-                    },
-                    {
-                        "Ref": "EnterpriseDataTable"
-                    },
-                    {
-                        "Ref": "ConfluencePagesTable"
-                    },
-                    {
-                        "Ref": "MeridianPagesTable"
-                    },
-                    {
-                        "Ref": "MeridianAuditTable"
-                    },
-                    {
-                        "Ref": "MeridianApprovalsTable"
-                    },
-                    {
-                        "Ref": "SupportTicketsTable"
-                    },
-                    {
-                        "Ref": "RefundLogTable"
-                    },
-                    {
-                        "Ref": "TenantMembersTable"
-                    },
-                    {
-                        "Ref": "TenantListingsTable"
-                    },
-                    {
-                        "Ref": "CustomerProfilesTable"
-                    },
-                    {
-                        "Ref": "ErasureLedgerTable"
-                    },
-                    {
-                        "Ref": "AIPoliciesTable"
-                    },
-                    {
-                        "Ref": "AIUsageLedgerTable"
-                    }
+                    {"Ref": "IntegrationMapTable"},
+                    {"Ref": "EnterpriseDataTable"},
+                    {"Ref": "ConfluencePagesTable"},
+                    {"Ref": "MeridianPagesTable"},
+                    {"Ref": "MeridianAuditTable"},
+                    {"Ref": "MeridianApprovalsTable"},
+                    {"Ref": "SupportTicketsTable"},
+                    {"Ref": "RefundLogTable"},
+                    {"Ref": "TenantMembersTable"},
+                    {"Ref": "TenantListingsTable"},
+                    {"Ref": "CustomerProfilesTable"},
+                    {"Ref": "ErasureLedgerTable"},
+                    {"Ref": "AIPoliciesTable"},
+                    {"Ref": "AIUsageLedgerTable"}
                 ]
             }
         },
         "SeedTenantDocs": {
             "Type": "Custom::LabSeedData",
             "Properties": {
-                "ServiceToken": {
-                    "Fn::GetAtt": [
-                        "SeedDataFunction",
-                        "Arn"
-                    ]
-                },
-                "Bucket": {
-                    "Ref": "ArtifactBucket"
-                },
-                "Prefix": {
-                    "Ref": "ArtifactPrefix"
-                },
-                "Tables": [
-                    {
-                        "Ref": "TenantDocsTable"
-                    }
-                ],
-                "RoleArn": {
-                    "Fn::GetAtt": [
-                        "TenantDataAccessRole",
-                        "Arn"
-                    ]
-                }
+                "ServiceToken": {"Fn::GetAtt": ["SeedDataFunction", "Arn"]},
+                "Bucket": {"Ref": "ArtifactBucket"},
+                "Prefix": {"Ref": "ArtifactPrefix"},
+                "Tables": [{"Ref": "TenantDocsTable"}],
+                "RoleArn": {"Fn::GetAtt": ["TenantDataAccessRole", "Arn"]}
             }
         },
         "TestEvents": {
             "Type": "Custom::LabTestEvents",
             "Properties": {
-                "ServiceToken": {
-                    "Fn::GetAtt": [
-                        "TestEventsFunction",
-                        "Arn"
-                    ]
-                },
-                "Bucket": {
-                    "Ref": "ArtifactBucket"
-                },
-                "Prefix": {
-                    "Ref": "ArtifactPrefix"
-                },
+                "ServiceToken": {"Fn::GetAtt": ["TestEventsFunction", "Arn"]},
+                "Bucket": {"Ref": "ArtifactBucket"},
+                "Prefix": {"Ref": "ArtifactPrefix"},
                 "Functions": [
-                    {
-                        "Ref": "IntegrationAgentFunction"
-                    },
-                    {
-                        "Ref": "KnowledgeAgentFunction"
-                    },
-                    {
-                        "Ref": "MeridianSupportAgentFunction"
-                    },
-                    {
-                        "Ref": "TenantSaaSAppFunction"
-                    },
-                    {
-                        "Ref": "PromptGuardAppFunction"
-                    },
-                    {
-                        "Ref": "TenantRbacAppFunction"
-                    },
-                    {
-                        "Ref": "PrivacyGuardAppFunction"
-                    },
-                    {
-                        "Ref": "AIGovernanceGatewayFunction"
-                    }
+                    {"Ref": "IntegrationAgentFunction"},
+                    {"Ref": "KnowledgeAgentFunction"},
+                    {"Ref": "MeridianSupportAgentFunction"},
+                    {"Ref": "TenantSaaSAppFunction"},
+                    {"Ref": "PromptGuardAppFunction"},
+                    {"Ref": "TenantRbacAppFunction"},
+                    {"Ref": "PrivacyGuardAppFunction"},
+                    {"Ref": "AIGovernanceGatewayFunction"}
                 ]
             }
         },
@@ -2194,113 +1234,32 @@
                 "GovernanceGatewayAccessPolicy"
             ],
             "Properties": {
-                "ServiceToken": {
-                    "Fn::GetAtt": [
-                        "ValidationFunction",
-                        "Arn"
-                    ]
-                },
-                "ConfluenceUrl": {
-                    "Fn::Sub": "https://${ConfluenceRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"
-                },
-                "MeridianKbUrl": {
-                    "Fn::Sub": "https://${MeridianKbRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"
-                },
-                "AskUrl": {
-                    "Fn::Sub": "https://${MeridianFrontDoorApi}.execute-api.${AWS::Region}.amazonaws.com/v1/ask"
-                },
-                "AppRoleArn": {
-                    "Fn::GetAtt": [
-                        "OrderLambdaRole",
-                        "Arn"
-                    ]
-                },
-                "TenantDocsArn": {
-                    "Fn::GetAtt": [
-                        "TenantDocsTable",
-                        "Arn"
-                    ]
-                },
-                "ModelId": {
-                    "Ref": "BedrockModelId"
-                }
+                "ServiceToken": {"Fn::GetAtt": ["ValidationFunction", "Arn"]},
+                "ConfluenceUrl": {"Fn::Sub": "https://${ConfluenceRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"},
+                "MeridianKbUrl": {"Fn::Sub": "https://${MeridianKbRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"},
+                "AskUrl": {"Fn::Sub": "https://${MeridianFrontDoorApi}.execute-api.${AWS::Region}.amazonaws.com/v1/ask"},
+                "AppRoleArn": {"Fn::GetAtt": ["OrderLambdaRole", "Arn"]},
+                "TenantDocsArn": {"Fn::GetAtt": ["TenantDocsTable", "Arn"]},
+                "ModelId": {"Ref": "BedrockModelId"}
             }
         }
     },
     "Outputs": {
-        "ConfluenceApiUrl": {
-            "Value": {
-                "Fn::Sub": "https://${ConfluenceRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"
-            }
-        },
-        "MeridianKbApiUrl": {
-            "Value": {
-                "Fn::Sub": "https://${MeridianKbRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"
-            }
-        },
+        "ConfluenceApiUrl": {"Value": {"Fn::Sub": "https://${ConfluenceRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"}},
+        "MeridianKbApiUrl": {"Value": {"Fn::Sub": "https://${MeridianKbRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1"}},
         "MeridianAskUrl": {
-            "Value": {
-                "Fn::Sub": "https://${MeridianFrontDoorApi}.execute-api.${AWS::Region}.amazonaws.com/v1/ask"
-            }
+            "Value": {"Fn::Sub": "https://${MeridianFrontDoorApi}.execute-api.${AWS::Region}.amazonaws.com/v1/ask"}
         },
-        "TenantDataAccessRoleArn": {
-            "Value": {
-                "Fn::GetAtt": [
-                    "TenantDataAccessRole",
-                    "Arn"
-                ]
-            }
-        },
+        "TenantDataAccessRoleArn": {"Value": {"Fn::GetAtt": ["TenantDataAccessRole", "Arn"]}},
         "CodeSource": {
             "Value": {
-                "Fn::If": [
-                    "HasArtifacts",
-                    {
-                        "Fn::Sub": "s3://${ArtifactBucket}/${ArtifactPrefix}"
-                    },
-                    "PLACEHOLDER code"
-                ]
+                "Fn::If": ["HasArtifacts", {"Fn::Sub": "s3://${ArtifactBucket}/${ArtifactPrefix}"}, "PLACEHOLDER code"]
             }
         },
-        "CheckConfluenceApi": {
-            "Value": {
-                "Fn::GetAtt": [
-                    "LabValidation",
-                    "ConfluenceApi"
-                ]
-            }
-        },
-        "CheckMeridianKbApi": {
-            "Value": {
-                "Fn::GetAtt": [
-                    "LabValidation",
-                    "MeridianKbApi"
-                ]
-            }
-        },
-        "CheckMeridianAsk": {
-            "Value": {
-                "Fn::GetAtt": [
-                    "LabValidation",
-                    "MeridianAsk"
-                ]
-            }
-        },
-        "CheckTenantDocsDirectAccess": {
-            "Value": {
-                "Fn::GetAtt": [
-                    "LabValidation",
-                    "TenantDocsDirectAccess"
-                ]
-            }
-        },
-        "CheckModelAccess": {
-            "Value": {
-                "Fn::GetAtt": [
-                    "LabValidation",
-                    "ModelAccess"
-                ]
-            }
-        }
+        "CheckConfluenceApi": {"Value": {"Fn::GetAtt": ["LabValidation", "ConfluenceApi"]}},
+        "CheckMeridianKbApi": {"Value": {"Fn::GetAtt": ["LabValidation", "MeridianKbApi"]}},
+        "CheckMeridianAsk": {"Value": {"Fn::GetAtt": ["LabValidation", "MeridianAsk"]}},
+        "CheckTenantDocsDirectAccess": {"Value": {"Fn::GetAtt": ["LabValidation", "TenantDocsDirectAccess"]}},
+        "CheckModelAccess": {"Value": {"Fn::GetAtt": ["LabValidation", "ModelAccess"]}}
     }
 }
