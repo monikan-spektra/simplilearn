@@ -10,13 +10,6 @@
         },
         "DeploymentID": {
             "type": "String"
-        },
-        "alertEmailAddress": {
-            "type": "String",
-            "metadata": {
-                "description": "Email address that receives the bandwidth alert notification."
-            },
-            "defaultValue": "monika.n@spektrasystems.com"
         }
     },
     "variables": {
@@ -39,10 +32,9 @@
                 "tag": "Internet"
             }
         ],
-        "actionGroupName": "simplilearn-bandwidth",
-        "actionGroupShortName": "slbandwidth",
         "metricAlertName": "[concat('NetworkOutTotal-800MB-', parameters('DeploymentID'))]",
-        "networkOutThresholdBytes": 838860800
+        "networkOutThresholdBytes": 838860800,
+        "existingActionGroupId": "[resourceId('453f90a2-7f36-4cf1-86a8-c0c57a6ef68a', 'VM-Bandwidth-MNGT', 'Microsoft.Insights/actionGroups', 'Simplilearn-Bandwidth')]"
     },
     "resources": [
         {
@@ -232,30 +224,12 @@
             }
         },
         {
-            "type": "Microsoft.Insights/actionGroups",
-            "apiVersion": "2023-01-01",
-            "name": "[variables('actionGroupName')]",
-            "location": "Global",
-            "properties": {
-                "groupShortName": "[variables('actionGroupShortName')]",
-                "enabled": true,
-                "emailReceivers": [
-                    {
-                        "name": "BandwidthAlertEmail",
-                        "emailAddress": "[parameters('alertEmailAddress')]",
-                        "useCommonAlertSchema": true
-                    }
-                ]
-            }
-        },
-        {
             "type": "Microsoft.Insights/metricAlerts",
             "apiVersion": "2018-03-01",
             "name": "[variables('metricAlertName')]",
             "location": "global",
             "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', variables('labvm'))]",
-                "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('labvm'))]"
             ],
             "properties": {
                 "description": "Fires when the VM's Network Out Total exceeds 800 MB within a 5-minute window.",
@@ -285,7 +259,7 @@
                 "autoMitigate": true,
                 "actions": [
                     {
-                        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', variables('actionGroupName'))]"
+                        "actionGroupId": "[variables('existingActionGroupId')]"
                     }
                 ]
             }
